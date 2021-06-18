@@ -124,7 +124,9 @@ export const ssrExchange = (params?: SSRExchangeParams): SSRExchange => {
 
     let forwardedOps$ = pipe(
       sharedOps$,
-      filter(op => !isCached(op)),
+      filter(op => {
+        return !isCached(op)
+      }),
       forward
     );
 
