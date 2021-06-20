@@ -172,12 +172,12 @@ export function callUseQuery<T = any, V = object>(
               ? pipe(
                   value,
                   onStart(() => {
-                    console.log("onStart")
+                    console.log("next.value onStart")
                     fetching.value = true;
                     stale.value = false;
                   }),
                   onPush(res => {
-                    console.log("onPush")
+                    console.log("next.value onPush")
                     data.value = res.data;
                     stale.value = !!res.stale;
                     fetching.value = false;

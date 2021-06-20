@@ -210,6 +210,7 @@ export const Client: new (opts: ClientOptions) => Client = function Client(
           return fromValue(result);
         }
 
+        console.log("merging?")
         return merge([
           fromValue(result),
           // Mark a result as stale when a new operation is sent for it
@@ -229,9 +230,11 @@ export const Client: new (opts: ClientOptions) => Client = function Client(
         ]);
       }),
       onPush(result => {
+        console.log("makeResultSource onPush")
         replays.set(operation.key, result);
       }),
       onStart(() => {
+        console.log("makeResultSource onStart")
         active.set(operation.key, source);
       }),
       onEnd(() => {
@@ -309,6 +312,7 @@ export const Client: new (opts: ClientOptions) => Client = function Client(
         return pipe(
           source,
           onStart(() => {
+            console.log("executeRequestOperation onStart")
             const prevReplay = replays.get(operation.key);
 
             if (operation.kind === 'subscription') {
@@ -327,6 +331,9 @@ export const Client: new (opts: ClientOptions) => Client = function Client(
             } else if (!isNetworkOperation) {
               dispatchOperation(operation);
             }
+          }),
+          onPush(() => {
+            console.log("executeRequestOperation onPush")
           }),
           onEnd(observer.complete),
           subscribe(observer.next)

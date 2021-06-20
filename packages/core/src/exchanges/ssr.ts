@@ -125,6 +125,7 @@ export const ssrExchange = (params?: SSRExchangeParams): SSRExchange => {
     let forwardedOps$ = pipe(
       sharedOps$,
       filter(op => {
+        console.log("ssr forwardedOps$", op)
         return !isCached(op)
       }),
       forward
@@ -134,7 +135,10 @@ export const ssrExchange = (params?: SSRExchangeParams): SSRExchange => {
     // it once, cachedOps$ needs to be merged after forwardedOps$
     let cachedOps$ = pipe(
       sharedOps$,
-      filter(op => isCached(op)),
+      filter(op => {
+        console.log("ssr cachedOps$", op)
+        return isCached(op)
+      }),
       map(op => {
         const serialized = data[op.key];
         return deserializeResult(op, serialized);
