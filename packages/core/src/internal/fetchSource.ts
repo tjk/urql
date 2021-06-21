@@ -12,10 +12,6 @@ const executeFetch = (
   let statusNotOk = false;
   let response: Response;
 
-  const result = {} as any;
-  response = {} as Response;
-  return Promise.resolve(makeResult(operation, result, response)) as Promise<OperationResult>;
-  /*
   return (fetcher || fetch)(url, fetchOptions)
     .then((res: Response) => {
       response = res;
@@ -40,7 +36,6 @@ const executeFetch = (
         );
       }
     }) as Promise<OperationResult>;
-    */
 };
 
 export const makeFetchSource = (

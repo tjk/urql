@@ -81,7 +81,7 @@ export const createRequest = <Data = any, Variables = object>(
   if (!vars) vars = {} as Variables;
   const query = keyDocument(q);
   return {
-    key: "deadbeef", //phash(query.__key, stringifyVariables(vars)) >>> 0,
+    key: phash(query.__key, stringifyVariables(vars)) >>> 0,
     query,
     variables: vars,
   };

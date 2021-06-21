@@ -7,7 +7,7 @@ export const composeExchanges = (exchanges: Exchange[]) => ({
   dispatchDebug,
 }: ExchangeInput) =>
   exchanges.reduceRight(
-    (forward, exchange) => 
+    (forward, exchange) =>
       exchange({
         client,
         forward,
