@@ -4,6 +4,7 @@
 .rts2_cache*
 .husky
 dist/
+!packages/vue-urql/dist
 build/
 coverage/
 package-lock.json
@@ -15,7 +16,6 @@ exchanges/*/LICENSE
 
 # TODO: Figure out how to remove these:
 tmp/
-dist/
 examples/*/public
 examples/*/yarn.lock
 examples/*/ios/
