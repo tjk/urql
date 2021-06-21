@@ -167,17 +167,20 @@ export function callUseQuery<T = any, V = object>(
         const subject = makeSubject<Source<any>>();
         source.value = pipe(subject.source, replayOne);
         next.value = (value: undefined | Source<any>) => {
+          let onStartCalled = false;
+          const doOnStart = () => {
+            if (onStartCalled) return;
+            onStartCalled = true;
+            fetching.value = true;
+            stale.value = false;
+          };
           const query$ = pipe(
             value
               ? pipe(
                   value,
-                  onStart(() => {
-                    console.log("next.value onStart")
-                    fetching.value = true;
-                    stale.value = false;
-                  }),
+                  onStart(doOnStart),
                   onPush(res => {
-                    console.log("next.value onPush")
+                    doOnStart();
                     data.value = res.data;
                     stale.value = !!res.stale;
                     fetching.value = false;
@@ -225,12 +228,9 @@ export function callUseQuery<T = any, V = object>(
   const response: UseQueryResponse<T, V> = {
     ...state,
     then(onFulfilled, onRejected) {
-      return pipe(
-        source.value,
-        switchAll,
-        map(getState),
-        take(1),
-        toPromise
+      return (data.value
+        ? Promise.resolve(state)
+        : pipe(source.value, switchAll, map(getState), take(1), toPromise)
       ).then(onFulfilled, onRejected);
     },
   };
